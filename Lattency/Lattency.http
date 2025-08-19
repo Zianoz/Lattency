@@ -1,0 +1,6 @@
+@Lattency_HostAddress = http://localhost:5283
+
+GET {{Lattency_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
