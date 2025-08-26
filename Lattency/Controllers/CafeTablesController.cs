@@ -1,4 +1,5 @@
 ﻿using Lattency.Data;
+using Lattency.DTOs;
 using Lattency.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +25,20 @@ namespace Lattency.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CafeTable>> CreateCafeTable([FromBody] CafeTable table)
+        public async Task<ActionResult<CafeTable>> CreateCafeTable([FromBody] CafeTableDTO dto)
         {
-            _context.CafeTables.Add(table);
+            var cafeTable = new CafeTable
+            {
+                Id = dto.Id,
+                Capacity = dto.Capacity,
+                Available = dto.Available,
+                BildURL = dto.BildURL,
+                Bookings = new List<PersonBookings>()
+            };
+
+            _context.CafeTables.Add(cafeTable);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCafeTables), new { id = table.Id }, table);
+            return CreatedAtAction(nameof(GetCafeTables), new { id = cafeTable.Id }, cafeTable);
         }
     }
 }
