@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Lattency.Controllers
 {
@@ -24,7 +25,7 @@ namespace Lattency.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
         {
-            return await _context.Persons.ToListAsync();
+            return await _context.Persons.Include(p => p.Bookings).ToListAsync();
         }
 
         // Creates a new person using PersonDTO
@@ -49,6 +50,29 @@ namespace Lattency.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetPersons), new { id = person.Id }, person);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Person>> UpdatePerson(int id, [FromBody] PersonDTO dto)
+        {
+            var person = await _context.Persons.FindAsync(id);
+            if (person == null) return NotFound();
+
+            person.Name = dto.Name ?? person.Name;
+            person.Email = dto.Email ?? person.Email;
+            person.Number = dto.Number ?? person.Number;
+            person.Username = dto.Username ?? person.Username;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, $"Error updating user: {ex.Message}");
+            }
+
+            return Ok(person);
         }
 
         [HttpDelete("{id}")]
