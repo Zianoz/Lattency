@@ -13,9 +13,9 @@ namespace Lattency.Models
         public int FK_PersonId { get; set; }
         public Person Person { get; set; }
 
-        [ForeignKey("Table")]
-        public int FK_TableId { get; set; }
-        public Table Table { get; set; }
+        [ForeignKey("CafeTable")]
+        public int FK_CafeTableId { get; set; }
+        public CafeTable CafeTable { get; set; }
 
     }
 }
