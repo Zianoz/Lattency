@@ -29,5 +29,11 @@ namespace Lattency.Repositories
             await _context.SaveChangesAsync();
             return cafeTable;
         }
+
+        public async Task DeleteCafeTableAsync(CafeTable cafeTable)
+        {
+            _context.CafeTables.Remove(cafeTable);
+            await _context.SaveChangesAsync();
+        }
     }
 }

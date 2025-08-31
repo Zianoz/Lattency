@@ -7,6 +7,7 @@ namespace Lattency.Repositories.IRepositories
         Task<IEnumerable<CafeTable>> GetAllCafeTablesAsync();
         Task<CafeTable> GetCafeTableByIdAsync(int id);
         Task <CafeTable> CreateCafeTableAsync(CafeTable cafeTable);
+        Task DeleteCafeTableAsync(CafeTable cafeTable);
 
     }
 } 

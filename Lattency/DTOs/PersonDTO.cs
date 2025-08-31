@@ -9,6 +9,6 @@
         public string Username { get; set; } 
         public string Password { get; set; }
 
-        // Exclude PasswordHash and Role for security reasons
+        //Exclude PasswordHash and Role for security reasons
     }
 }

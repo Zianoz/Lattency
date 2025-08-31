@@ -2,6 +2,7 @@
 using Lattency.Models;
 using Lattency.Services;
 using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,6 +21,19 @@ namespace Lattency.Controllers //API Layer
             _personService = personService;
         }
 
+        [HttpPost("Login")]
+        public async Task<ActionResult<Person>> LoginAsync([FromBody] LoginDTO dto)
+        {
+
+            var token = await _personService.LoginAsync(dto);
+            if (token == null)
+            {
+                return Unauthorized("Invalid credentials or insufficient permissions.");
+            }
+
+            return Ok(new { Token = token });
+        }
+
         // GET: api/Persons
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
@@ -36,8 +50,9 @@ namespace Lattency.Controllers //API Layer
             return CreatedAtAction(nameof(GetPersons), new { id = person.Id }, person);
         }
 
-        // PUT: api/Persons/5
+        // PUT: api/Persons/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Person>> UpdatePerson(int id, [FromBody] PersonDTO dto)
         {
             var updatedPerson = await _personService.UpdatePersonAsync(id, dto);
@@ -45,13 +60,14 @@ namespace Lattency.Controllers //API Layer
             return Ok(updatedPerson);
         }
 
-        // DELETE: api/Persons/5
+        // DELETE: api/Persons/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Person>> DeletePerson(int id)
         {
             var isDeleted = await _personService.DeletePersonAsync(id);
             if (!isDeleted) return NotFound();
-            return NoContent(); // 204 No Content is a common response for a successful deletion
+            return NoContent();
         }
     }
 }

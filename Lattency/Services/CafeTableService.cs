@@ -3,6 +3,7 @@ using Lattency.DTOs;
 using Lattency.Models;
 using Lattency.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Lattency.Repositories;
 
 namespace Lattency.Services
 {
@@ -37,6 +38,15 @@ namespace Lattency.Services
 
             await _cafeTableRepository.CreateCafeTableAsync(cafeTable);
             return cafeTable;
+        }
+
+        public async Task<bool> DeleteCafeTableAsync(int id)
+        {
+            var cafeTable = await _cafeTableRepository.GetCafeTableByIdAsync(id);
+            if (cafeTable == null) return false;
+
+            await _cafeTableRepository.DeleteCafeTableAsync(cafeTable);
+            return true;
         }
     }
 }

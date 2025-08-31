@@ -1,4 +1,5 @@
 ﻿using Lattency.Data;
+using Lattency.DTOs;
 using Lattency.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,10 @@ namespace Lattency.Repositories //Data access layer = DATABASE LOGIC ONLY!
         {
             var person = await _context.Persons.Include(p => p.Bookings).ToListAsync();
             return person;
+        }
+        public async Task<Person> GetPersonByUsernameAsync(string username)
+        {
+            return await _context.Persons.FirstOrDefaultAsync(p => p.Username == username);
         }
 
         public async Task<Person> GetPersonByIdAsync(int id)

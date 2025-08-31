@@ -13,7 +13,7 @@ namespace Lattency.Controllers
     [ApiController]
     public class CafeTablesController : ControllerBase
     {
-        private readonly ICafeTableService _cafeTableService; 
+        private readonly ICafeTableService _cafeTableService;
 
         public CafeTablesController(ICafeTableService cafeTableService)
         {
@@ -43,6 +43,14 @@ namespace Lattency.Controllers
         {
             var cafeTable = await _cafeTableService.CreateCafeTableAsync(dto);
             return Ok(cafeTable);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<CafeTable>> DeleteCafeTableAsync(int id)
+        {
+            var isDeleted = await _cafeTableService.DeleteCafeTableAsync(id);
+            if (!isDeleted) return NotFound();
+            return NoContent();
         }
     }
 }
