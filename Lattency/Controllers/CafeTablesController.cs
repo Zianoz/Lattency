@@ -1,8 +1,10 @@
 ﻿using Lattency.Data;
 using Lattency.DTOs;
 using Lattency.Models;
+using Lattency.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lattency.Controllers
@@ -11,34 +13,36 @@ namespace Lattency.Controllers
     [ApiController]
     public class CafeTablesController : ControllerBase
     {
-        private readonly LattencyDBContext _context;
+        private readonly ICafeTableService _cafeTableService; 
 
-        public CafeTablesController(LattencyDBContext context)
+        public CafeTablesController(ICafeTableService cafeTableService)
         {
-            _context = context;
+            _cafeTableService = cafeTableService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CafeTable>>> GetCafeTables()
         {
-            return await _context.CafeTables.ToListAsync();
+            var cafeTables = await _cafeTableService.GetAllCafeTablesAsync();
+            return Ok(cafeTables);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CafeTable>> GetCafeTableByIdAsync(int id)
+        {
+            var cafeTable = await _cafeTableService.GetCafeTableByIdAsync(id);
+            if (cafeTable == null)
+            {
+                return NotFound();
+            }
+            return Ok(cafeTable);
         }
 
         [HttpPost]
         public async Task<ActionResult<CafeTable>> CreateCafeTable([FromBody] CafeTableDTO dto)
         {
-            var cafeTable = new CafeTable
-            {
-                Id = dto.Id,
-                Capacity = dto.Capacity,
-                Available = dto.Available,
-                BildURL = dto.BildURL,
-                Bookings = new List<PersonBookings>()
-            };
-
-            _context.CafeTables.Add(cafeTable);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCafeTables), new { id = cafeTable.Id }, cafeTable);
+            var cafeTable = await _cafeTableService.CreateCafeTableAsync(dto);
+            return Ok(cafeTable);
         }
     }
 }

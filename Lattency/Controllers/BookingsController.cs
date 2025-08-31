@@ -27,3 +27,6 @@ namespace Lattency.Controllers
 
     }
 }
+
+
+//Be able to book if you are logged in as customer, checks if table is available, if so, create booking and set table to unavailable. The table will be booked for 2 hours before and after its booked time. Also assign the booking to its corresponding customer. If the table is not available, return a message saying so.
