@@ -2,9 +2,10 @@
 
 namespace Lattency.Models
 {
-    public class PersonBookings
+    public class Booking
     {
         public int Id { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime ReservationStart { get; set; }
         public DateTime ReservationEnd { get; set; }
         public int NumGuests { get; set; }

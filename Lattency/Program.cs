@@ -56,6 +56,11 @@ namespace Lattency
             builder.Services.AddScoped<IPersonService, PersonService>();
             builder.Services.AddScoped<ICafeTableRepository, CafeTableRepository>();
             builder.Services.AddScoped<ICafeTableService, CafeTableService>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<IMenuService, MenuService>();
+            builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

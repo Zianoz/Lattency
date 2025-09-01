@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Lattency.Migrations
 {
     /// <inheritdoc />
-    public partial class LattencyDatabase : Migration
+    public partial class BookingUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,6 @@ namespace Lattency.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Capacity = table.Column<int>(type: "int", nullable: false),
-                    Available = table.Column<bool>(type: "bit", nullable: false),
                     BildURL = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -66,6 +65,7 @@ namespace Lattency.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReservationStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReservationEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NumGuests = table.Column<int>(type: "int", nullable: false),

@@ -5,11 +5,9 @@ namespace Lattency.Models
     public class Menu
     {
         public int Id { get; set; }
-        public string DishName { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
 
-        [Precision(18, 2)]
-        public decimal Price { get; set; }
-        public bool IsPopular { get; set; }
+        //one menu has many dishes
+        public ICollection<Dish> Dishes { get; set; } = new List<Dish>();
     }
 }

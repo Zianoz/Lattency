@@ -1,5 +1,9 @@
-﻿using Lattency.Data;
+﻿using System.Security.Claims;
+using Lattency.Data;
+using Lattency.DTOs;
 using Lattency.Models;
+using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,23 +14,71 @@ namespace Lattency.Controllers
     [ApiController]
     public class BookingsController : ControllerBase
     {
-        private readonly LattencyDBContext _context;
+        private readonly IBookingService _bookingService;
 
-        public BookingsController(LattencyDBContext context)
+        public BookingsController(IBookingService bookingService)
         {
-            _context = context;
+            _bookingService = bookingService;
         }
 
+        //Create a booking
+        [HttpPost]
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult<Booking>> CreateBooking([FromBody] BookingDTO dto)
+        {
+            int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var booking = await _bookingService.CreateBookingAsync(personId, dto.CafeTableId, dto.ReservationStart, dto.NumGuests);
 
+            if (booking == null)
+                return BadRequest("Table is not available at the requested time.");
 
-        //[HttpPost]
-        //public async Task<ActionResult> CreateBooking([FromBody] PersonBookings booking)
-        //{
-        //    var table = await _context.CafeTables
-        //}
+            return Ok(booking);
+        }
+
+        //Get bookings for logged-in customer
+        [HttpGet("me")]
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult<IEnumerable<BookingResponseDTO>>> GetMyBookings()
+        {
+            var personIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(personIdStr))
+                return Unauthorized("User ID not found in token.");
+
+            int personId = int.Parse(personIdStr);
+            var bookings = await _bookingService.GetBookingsByPersonIdAsync(personId);
+
+            return Ok(bookings);
+        }
+
+        //Get all bookings (admin)
+        [HttpGet("all")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<BookingResponseDTO>>> GetAllBookings()
+        {
+            var bookings = await _bookingService.GetAllPersonBookingsAsync();
+            return Ok(bookings);
+        }
+
+        //Delete a booking
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> DeleteBooking(int id)
+        {
+            int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var success = await _bookingService.DeleteBookingAsync(id, personId);
+
+            if (!success)
+                return BadRequest("Cannot delete booking (not found or not yours).");
+
+            return NoContent();
+        }
 
     }
+
 }
 
 
-//Be able to book if you are logged in as customer, checks if table is available, if so, create booking and set table to unavailable. The table will be booked for 2 hours before and after its booked time. Also assign the booking to its corresponding customer. If the table is not available, return a message saying so.
+//Be able to book if you are logged in as customer, checks if table is available, if so, create booking and set table to unavailable.
+//The table will be booked for 2 hours before and after its booked time.
+//Also assign the booking to its corresponding customer.
+//If the table is not available, return a message saying so.

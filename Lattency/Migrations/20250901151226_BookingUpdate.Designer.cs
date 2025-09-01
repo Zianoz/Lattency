@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lattency.Migrations
 {
     [DbContext(typeof(LattencyDBContext))]
-    [Migration("20250826132503_LattencyDatabase")]
-    partial class LattencyDatabase
+    [Migration("20250901151226_BookingUpdate")]
+    partial class BookingUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,9 +32,6 @@ namespace Lattency.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Available")
-                        .HasColumnType("bit");
 
                     b.Property<string>("BildURL")
                         .IsRequired()
@@ -120,6 +117,9 @@ namespace Lattency.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FK_CafeTableId")
                         .HasColumnType("int");

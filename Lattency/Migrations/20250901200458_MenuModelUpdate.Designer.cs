@@ -4,6 +4,7 @@ using Lattency.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lattency.Migrations
 {
     [DbContext(typeof(LattencyDBContext))]
-    partial class LattencyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250901200458_MenuModelUpdate")]
+    partial class MenuModelUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,7 +80,7 @@ namespace Lattency.Migrations
                     b.ToTable("CafeTables");
                 });
 
-            modelBuilder.Entity("Lattency.Models.Dish", b =>
+            modelBuilder.Entity("Lattency.Models.Menu", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,31 +103,9 @@ namespace Lattency.Migrations
                     b.Property<bool>("IsPopular")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuId");
-
-                    b.ToTable("Dishes");
-                });
-
-            modelBuilder.Entity("Lattency.Models.Menu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -187,25 +168,9 @@ namespace Lattency.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("Lattency.Models.Dish", b =>
-                {
-                    b.HasOne("Lattency.Models.Menu", "Menu")
-                        .WithMany("Dishes")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Menu");
-                });
-
             modelBuilder.Entity("Lattency.Models.CafeTable", b =>
                 {
                     b.Navigation("Bookings");
-                });
-
-            modelBuilder.Entity("Lattency.Models.Menu", b =>
-                {
-                    b.Navigation("Dishes");
                 });
 
             modelBuilder.Entity("Lattency.Models.Person", b =>

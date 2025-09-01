@@ -30,15 +30,10 @@ namespace Lattency.Services //Business logic layer
             var person = await _personRepository.GetPersonByUsernameAsync(dto.Username);
             if (person == null || !BCrypt.Net.BCrypt.Verify(dto.Password, person.PasswordHash))
             {
-                return null;  // Invalid credentials
+                return null;  //Invalid credentials
             }
 
-            if (person.Role != "Admin")
-            {
-                return null;  // Not an admin
-            }
-
-            // Generate JWT
+            //Generate JWT
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, person.Username),
@@ -72,7 +67,7 @@ namespace Lattency.Services //Business logic layer
                 Username = dto.Username,
                 PasswordHash = hashedPassword,
                 Role = "Customer",
-                Bookings = new List<PersonBookings>()
+                Bookings = new List<Booking>()
             };
             await _personRepository.AddPersonAsync(person);
             return person; //Passes Person Object to PersonRepository

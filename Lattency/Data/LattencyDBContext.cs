@@ -10,7 +10,9 @@ namespace Lattency.Data
 
         public DbSet<Person> Persons { get; set; }
         public DbSet<Menu> Menus { get; set; }
-        public DbSet<PersonBookings> Bookings { get; set; }
+        public DbSet<Dish> Dishes { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
         public DbSet<CafeTable> CafeTables { get; set; }
     }
 }
+

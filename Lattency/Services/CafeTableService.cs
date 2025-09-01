@@ -31,9 +31,8 @@ namespace Lattency.Services
             var cafeTable = new CafeTable 
             {
                 Capacity = dto.Capacity,
-                Available = dto.Available,
                 BildURL = dto.BildURL,
-                Bookings = new List<PersonBookings>()
+                Bookings = new List<Booking>()
             };
 
             await _cafeTableRepository.CreateCafeTableAsync(cafeTable);
