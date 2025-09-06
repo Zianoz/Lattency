@@ -36,6 +36,7 @@ namespace Lattency.Controllers //API Layer
 
         // GET: api/Persons
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
         {
             var persons = await _personService.GetAllPersonsAsync();

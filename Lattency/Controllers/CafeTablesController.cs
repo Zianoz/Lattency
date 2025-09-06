@@ -2,6 +2,7 @@
 using Lattency.DTOs;
 using Lattency.Models;
 using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -39,6 +40,7 @@ namespace Lattency.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CafeTable>> CreateCafeTable([FromBody] CafeTableDTO dto)
         {
             var cafeTable = await _cafeTableService.CreateCafeTableAsync(dto);
@@ -46,6 +48,7 @@ namespace Lattency.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CafeTable>> DeleteCafeTableAsync(int id)
         {
             var isDeleted = await _cafeTableService.DeleteCafeTableAsync(id);

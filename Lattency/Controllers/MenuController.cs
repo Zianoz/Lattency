@@ -1,6 +1,7 @@
 ﻿using Lattency.DTOs;
 using Lattency.Models;
 using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -19,6 +20,7 @@ namespace Lattency.Controllers
         }
 
         [HttpPost("CreateMenu")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Menu>> CreateMenuAsync([FromBody] MenuCreationDTO dto)
         {
             if (dto == null)
@@ -32,6 +34,7 @@ namespace Lattency.Controllers
         }
 
         [HttpPost("AddDish")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Dish>> CreateDishtoMenuIdAsync(int menuId, [FromBody] DishCreationDTO dto)
         {
             if (dto == null)
@@ -52,6 +55,7 @@ namespace Lattency.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult>DeleteMenuAsync(int id)
         {
             var menu = await _menuService.DeleteMenuByIdAsync(id);
