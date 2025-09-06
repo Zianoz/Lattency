@@ -61,16 +61,13 @@ namespace Lattency.Controllers
 
         //Delete a booking
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Customer")]
-        public async Task<IActionResult> DeleteBooking(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<Booking>> DeleteBooking(int id)
         {
-            int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var success = await _bookingService.DeleteBookingAsync(id, personId);
-
-            if (!success)
-                return BadRequest("Cannot delete booking (not found or not yours).");
-
-            return NoContent();
+            var booking = await _bookingService.DeleteBookingAsync(id);
+            if (booking == null)
+                return NotFound("Booking not found.");
+            return Ok("Booking was deleted successfully!");
         }
 
     }

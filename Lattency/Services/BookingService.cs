@@ -3,6 +3,8 @@ using Lattency.Models;
 using Lattency.Repositories;
 using Lattency.Repositories.IRepositories;
 using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Lattency.Services
 {
@@ -23,9 +25,14 @@ namespace Lattency.Services
 
             //Check overlapping bookings for this table
             var tableBookings = await _bookingRepository.GetByTableIdAsync(tableId);
-            bool overlap = tableBookings.Any(b =>
-                (startWindow < b.ReservationEnd) && (endWindow > b.ReservationStart)
-            );
+
+            //check against active bookings
+            bool overlap = tableBookings
+                .Where(b => b.ReservationEnd > DateTime.UtcNow) //ignore expired
+                .Any(b =>
+                    (startWindow < b.ReservationEnd) &&
+                    (endWindow > b.ReservationStart)
+                );
 
             if (overlap)
                 return null; //Table is not available
@@ -37,6 +44,7 @@ namespace Lattency.Services
                 ReservationStart = reservationStart,
                 ReservationEnd = endWindow,
                 NumGuests = numGuests,
+                Status = "Active",
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -46,15 +54,15 @@ namespace Lattency.Services
             return booking;
         }
 
-        public async Task<bool> DeleteBookingAsync(int bookingId, int personId)
+        public async Task<ActionResult<Booking>> DeleteBookingAsync(int id)
         {
-            var booking = await _bookingRepository.GetByIdAsync(bookingId);
-            if (booking == null || booking.FK_PersonId != personId)
-                return false;
+            var booking = await _bookingRepository.GetByIdAsync(id);
+            if (booking == null)
+                return new NotFoundObjectResult("Booking was not found");
 
             await _bookingRepository.DeleteAsync(booking);
             await _bookingRepository.SaveChangesAsync();
-            return true;
+            return new OkObjectResult(booking);
         }
 
         public async Task<IEnumerable<BookingResponseDTO>> GetBookingsByPersonIdAsync(int personId)
@@ -85,7 +93,8 @@ namespace Lattency.Services
                 ReservationEnd = b.ReservationEnd,
                 NumGuests = b.NumGuests,
                 PersonId = b.FK_PersonId,
-                PersonName = b.Person.Name
+                PersonName = b.Person.Name,
+                Status = b.ReservationEnd > DateTime.UtcNow ? "Expired" : "Active"
             });
         }
     }

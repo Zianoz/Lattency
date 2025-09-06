@@ -1,4 +1,5 @@
-﻿using Lattency.Models;
+﻿using Lattency.DTOs;
+using Lattency.Models;
 
 public interface IPersonRepository
 {

@@ -1,5 +1,6 @@
 ﻿using Lattency.DTOs;
 using Lattency.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Lattency.Services.IServices
 {
@@ -9,7 +10,7 @@ namespace Lattency.Services.IServices
         Task<Booking?> CreateBookingAsync(int personId, int tableId, DateTime startTime, int numGuests);
 
         //Delete a booking for a person
-        Task<bool> DeleteBookingAsync(int bookingId, int personId);
+        Task<ActionResult<Booking>> DeleteBookingAsync(int íd);
 
         //Get all bookings for a specific person
         Task<IEnumerable<BookingResponseDTO>> GetBookingsByPersonIdAsync(int personId);

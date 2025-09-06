@@ -7,9 +7,10 @@ namespace Lattency.Services.IServices
     {
         //Sends request to PersonService
         Task<string> LoginAsync(LoginDTO dto);
-        Task<IEnumerable<Person>> GetAllPersonsAsync();
+        Task<IEnumerable<FetchPersonDTO>> GetAllPersonsAsync();
         Task<Person> CreatePersonAsync(PersonDTO dto);
         Task<Person> UpdatePersonAsync(int id, PersonDTO dto);
         Task<bool> DeletePersonAsync(int id);
+
     }
 }

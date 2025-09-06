@@ -9,6 +9,7 @@ namespace Lattency.Models
         public DateTime ReservationStart { get; set; }
         public DateTime ReservationEnd { get; set; }
         public int NumGuests { get; set; }
+        public string Status { get; set; }
 
         [ForeignKey("Person")]
         public int FK_PersonId { get; set; }

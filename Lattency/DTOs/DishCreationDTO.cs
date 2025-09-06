@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Lattency.Models
+namespace Lattency.DTOs
 {
-    public class Dish
+    public class DishCreationDTO
     {
         public int Id { get; set; }
         public string DishName { get; set; }
@@ -13,6 +13,5 @@ namespace Lattency.Models
         public bool IsPopular { get; set; }
         public string ImageURL { get; set; }
 
-        public int MenuId { get; set; }
     }
 }

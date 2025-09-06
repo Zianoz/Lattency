@@ -20,9 +20,18 @@ namespace Lattency.Services //Business logic layer
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<Person>> GetAllPersonsAsync()
+        public async Task<IEnumerable<FetchPersonDTO>> GetAllPersonsAsync()
         {
-            return await _personRepository.GetAllPersonsAsync();
+            var people = await _personRepository.GetAllPersonsAsync();
+
+            return people.Select(p => new FetchPersonDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Email = p.Email,
+                Number = p.Number,
+                Username = p.Username,
+            });
         }
 
         public async Task<string> LoginAsync(LoginDTO dto)

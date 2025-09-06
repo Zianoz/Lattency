@@ -9,5 +9,6 @@
         public int NumGuests { get; set; }
         public int PersonId { get; set; }
         public string PersonName { get; set; }
+        public string Status { get; set; }
     }
 }
