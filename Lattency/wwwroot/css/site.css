@@ -1,4 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 /* --- Base reset --- */
 body {
@@ -10,14 +11,14 @@ body {
 
 /* --- Navbar --- */
 .navbar {
-    font-family: "Dancing Script", cursive;
+    font-family: 'Outfit', sans-serif;
     position: absolute; /* Sit on top of hero section */
     top: 0;
     left: 0;
     width: 100%;
-    padding: 0.8rem 1.5rem;
     z-index: 100; /* Ensure it overlays the hero */
     font-size: 1.5rem;
+    padding-top: 1rem;
 }
 
     .navbar .container {
@@ -28,7 +29,7 @@ body {
 
 .logo {
     font-family: "Dancing Script", cursive;
-    font-size: 2.5rem;
+    font-size: 2.7rem;
     font-weight: bold;
     color: white;
     text-decoration: none;
@@ -53,7 +54,7 @@ body {
     padding: 1rem;
     background: #333;
     color: white;
-    margin-top: 2rem;
+
 }
 
 /* --- Container utility --- */
