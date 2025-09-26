@@ -1,5 +1,21 @@
-﻿
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Home";
+    ViewData["Description"] = "Welcome to the Lattency homepage!";
 }
-<h1>Welcome to my MVC page!</h1>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" />
+}
+
+<section class="hero">
+    <div class="hero-text">
+        <h1>Welcome to Lattency</h1>
+        <p>
+            At Lattency Café, coffee meets creativity. Inspired by the world of technology and connection,
+            we craft every cup with precision and speed—without sacrificing quality. Whether you’re here to power through code,
+            brainstorm with friends, or simply enjoy a perfectly brewed latte,
+            Lattency is your hub for great taste and great ideas. Fast service, smooth blends, zero lag.
+        </p>
+    </div>
+</section>

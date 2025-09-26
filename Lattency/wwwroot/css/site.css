@@ -1,0 +1,63 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
+/* --- Base reset --- */
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #D6D4A0;
+    color: white;
+}
+
+/* --- Navbar --- */
+.navbar {
+    font-family: "Dancing Script", cursive;
+    position: absolute; /* Sit on top of hero section */
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    z-index: 100; /* Ensure it overlays the hero */
+    font-size: 1.5rem;
+}
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+.logo {
+    font-family: "Dancing Script", cursive;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.nav-links a {
+    margin-left: 1.2rem;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+    .nav-links a:hover {
+        opacity: 0.8;
+    }
+
+/* --- Footer --- */
+.footer {
+    text-align: center;
+    padding: 1rem;
+    background: #333;
+    color: white;
+    margin-top: 2rem;
+}
+
+/* --- Container utility --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
