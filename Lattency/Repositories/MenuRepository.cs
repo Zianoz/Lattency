@@ -21,7 +21,7 @@ namespace Lattency.Repositories
         }
         public async Task<IEnumerable<Menu>> GetAllAsync()
         {
-            return await _context.Menus.ToListAsync();
+            return await _context.Menus.Include(m=>m.Dishes).ToListAsync();
         }
         public async Task AddAsync(Menu menu)
         {

@@ -11,7 +11,7 @@ namespace Lattency.Models
         [Precision(18, 2)]
         public decimal Price { get; set; }
         public bool IsPopular { get; set; }
-        public string ImageURL { get; set; }
+        public string? ImageURL { get; set; }
 
         public int MenuId { get; set; }
     }

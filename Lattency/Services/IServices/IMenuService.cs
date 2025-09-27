@@ -8,6 +8,7 @@ namespace Lattency.Services.IServices
     {
         Task<Menu> CreateMenuAsync(MenuCreationDTO dto);
         Task<Menu> GetMenuByIdAsync(int id);
+        Task<IEnumerable<Menu>> GetAllMenusAsync();
         Task<IActionResult> DeleteMenuByIdAsync(int id);
         Task<ActionResult<Dish>> CreateDishtoMenuIdAsync(int menuId, DishCreationDTO dto);
     }

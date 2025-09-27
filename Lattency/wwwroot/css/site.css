@@ -5,7 +5,7 @@
 body {
     margin: 0;
     font-family: "Segoe UI", sans-serif;
-    background: #D6D4A0;
+    background: #E6AA68;
     color: white;
 }
 
@@ -21,11 +21,11 @@ body {
     padding-top: 1rem;
 }
 
-    .navbar .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .logo {
     font-family: "Dancing Script", cursive;

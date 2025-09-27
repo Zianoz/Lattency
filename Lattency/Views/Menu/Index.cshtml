@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Lattency.Models.Menu>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Menu";
+    ViewData["Description"] = "Lattency Cafe Menu Page!";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/menu.css" />
+}
+
+<div class="menu-page">
+    <h1 class="menu-title">Our Menu</h1>
+
+    @foreach (var menu in Model)
+    {
+        <div class="menu-section">
+            <h2 class="menu-name">@menu.Name</h2>
+            @if (menu.Dishes != null && menu.Dishes.Any())
+            {
+                <ul class="dish-list">
+                    @foreach (var dish in menu.Dishes)
+                    {
+                        <li class="dish-item">
+                            <span class="dish-name">@dish.DishName</span>
+                            <span class="dish-description">@dish.Description</span>               
+                            <span class="dish-price">@dish.Price kr</span>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="coming-soon"><em>Coming soon...</em></p>
+            }
+        </div>
+    }
+</div>
+
+

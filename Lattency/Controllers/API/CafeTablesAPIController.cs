@@ -8,15 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lattency.Controllers
+namespace Lattency.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CafeTablesController : ControllerBase
+    public class CafeTablesAPIController : ControllerBase
     {
         private readonly ICafeTableService _cafeTableService;
 
-        public CafeTablesController(ICafeTableService cafeTableService)
+        public CafeTablesAPIController(ICafeTableService cafeTableService)
         {
             _cafeTableService = cafeTableService;
         }

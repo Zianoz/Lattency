@@ -1,0 +1,77 @@
+﻿.hero {
+    background-image: url('../images/coffee.jpg');
+    background-size: cover; /* Fill the container */
+    background-position: center; /* Center the image */
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    display: flex; /* Use flex to center text */
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    text-align: center;
+    position: relative;
+}
+
+.menu-page {
+    max-width: 800px;
+    margin: 6rem auto;
+    padding: 2rem;
+    background: #fffaf0; /* light coffee cream background */
+    color: #3e2723; /* dark coffee brown */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.menu-title {
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #5d4037;
+}
+
+.menu-section {
+    margin-bottom: 2.5rem;
+}
+
+.menu-name {
+    font-size: 2rem;
+    font-family: 'Dancing Script', cursive; /* gives it a handwritten café vibe */
+    margin-bottom: 1rem;
+    color: #6d4c41;
+    border-bottom: 2px solid #d7ccc8;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* --- Dishes --- */
+.dish-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dish-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.7rem 0;
+    border-bottom: 1px dotted #a1887f;
+    font-size: 1.1rem;
+}
+
+.dish-name {
+    font-weight: 500;
+}
+
+.dish-price {
+    font-weight: bold;
+    color: #4e342e;
+}
+
+.dish-description {
+    font-weight: 300;
+}
+
+.coming-soon {
+    font-style: italic;
+    color: #8d6e63;
+}

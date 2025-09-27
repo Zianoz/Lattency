@@ -1,0 +1,20 @@
+﻿
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Booking";
+    ViewData["Description"] = "Book a table at Lattency Cafe!";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/booking.css" />
+}
+
+<form id="bookingForm">
+    <select id="cafeTableId" name="CafeTableId"></select>
+    <input type="datetime-local" id="reservationStart" name="ReservationStart" />
+    <input type="number" id="numGuests" name="NumGuests" />
+    <button type="submit">Book Now</button>
+</form>
+
+<div id="responseMessage"></div>
+
+}

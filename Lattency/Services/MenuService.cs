@@ -70,5 +70,11 @@ namespace Lattency.Services
             var menu = await _menuRepository.GetByIdAsync(id);
             return menu;
         }
+
+        public async Task<IEnumerable<Menu>> GetAllMenusAsync()
+        {
+            var menu = await _menuRepository.GetAllAsync();
+            return menu;
+        }
     }
 }

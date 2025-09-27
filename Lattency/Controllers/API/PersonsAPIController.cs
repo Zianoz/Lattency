@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Lattency.Controllers //API Layer
+namespace Lattency.Controllers.API //API Layer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PersonsController : ControllerBase
+    public class PersonsAPIController : ControllerBase
     {
         private readonly IPersonService _personService;
 
         //Provides service to container when controller is made ig
-        public PersonsController(IPersonService personService)
+        public PersonsAPIController(IPersonService personService)
         {
             _personService = personService;
         }

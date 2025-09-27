@@ -8,15 +8,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lattency.Controllers
+namespace Lattency.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookingsController : ControllerBase
+    public class BookingsAPIController : ControllerBase
     {
         private readonly IBookingService _bookingService;
 
-        public BookingsController(IBookingService bookingService)
+        public BookingsAPIController(IBookingService bookingService)
         {
             _bookingService = bookingService;
         }
