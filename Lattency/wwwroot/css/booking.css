@@ -1,13 +1,11 @@
 ﻿.booking-container {
-    max-width: 500px;
-    margin: 50px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    text-align: center;
-    font-family: Arial, sans-serif;
-    color: #333;
+    max-width: 800px;
+    margin: 6rem auto;
+    padding: 2rem;
+    background: #fffaf0; /* light coffee cream background */
+    color: #3e2723; /* dark coffee brown */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
     .booking-container h1 {

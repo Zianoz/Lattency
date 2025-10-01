@@ -1,10 +1,13 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using Azure;
 using Lattency.DTOs;
 using Lattency.Models;
 using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Lattency.Services //Business logic layer
 {
@@ -12,12 +15,14 @@ namespace Lattency.Services //Business logic layer
     {
         private readonly IPersonRepository _personRepository; //Looks for and finds PersonRepository
         private readonly IConfiguration _configuration; //Allows access to appsettings.json
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         //Looks for and finds IPersonRepository
-        public PersonService(IPersonRepository personRepository, IConfiguration configuration)
+        public PersonService(IPersonRepository personRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _personRepository = personRepository;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<FetchPersonDTO>> GetAllPersonsAsync()
@@ -36,20 +41,21 @@ namespace Lattency.Services //Business logic layer
 
         public async Task<string> LoginAsync(LoginDTO dto)
         {
-            var person = await _personRepository.GetPersonByUsernameAsync(dto.Username);
+            var person = await _personRepository.GetPersonByEmailAsync(dto.Email);
             if (person == null || !BCrypt.Net.BCrypt.Verify(dto.Password, person.PasswordHash))
             {
                 return null;  //Invalid credentials
             }
 
             //Generate JWT
-            var claims = new[]
+            var claims = new[] //Creats identity claims which becomes User.Identity and User.IsInRole(...).
             {
-                new Claim(ClaimTypes.Name, person.Username),
+                new Claim(ClaimTypes.Email, person.Email),
                 new Claim(ClaimTypes.Role, person.Role),
                 new Claim(ClaimTypes.NameIdentifier, person.Id.ToString())
             };
 
+            //Generates a signed JWT using secret from appsettings.json
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -61,7 +67,19 @@ namespace Lattency.Services //Business logic layer
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            //Store JWT in HttpOnly cookie
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("AuthToken", jwtToken, new CookieOptions
+            {
+                HttpOnly = true, 
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddHours(1)
+            });
+
+            return jwtToken;
+
         }
 
         //Gets DTO from PersonController > IPersonService

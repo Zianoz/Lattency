@@ -7,14 +7,18 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/booking.css" />
 }
+<div class="booking-section">
+<div class="booking-container">
 
-<form id="bookingForm">
-    <select id="cafeTableId" name="CafeTableId"></select>
-    <input type="datetime-local" id="reservationStart" name="ReservationStart" />
-    <input type="number" id="numGuests" name="NumGuests" />
-    <button type="submit">Book Now</button>
-</form>
+    <form id="booking-form">
+        <select id="cafeTableId" name="CafeTableId"></select>
+        <input type="datetime-local" id="reservationStart" name="ReservationStart" />
+        <input type="number" id="numGuests" name="NumGuests" placeholder="Number of guests" />
+        <button type="submit">Book Now</button>
+    </form>
 
 <div id="responseMessage"></div>
+</div>
+</div>
 
 }

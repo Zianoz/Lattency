@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Register";
+    ViewData["Description"] = "Create your account at Lattency Cafe";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+
+<div class="login-container">
+    <h2 class="login-title">Create an Account</h2>
+
+    <form asp-controller="Account" asp-action="Register" method="post" class="login-form">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="Username" required />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="Email" required />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="Password" required />
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="ConfirmPassword" required />
+        </div>
+
+        <button type="submit" class="login-btn">Register</button>
+    </form>
+
+    <p class="login-footer">
+        Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a>
+    </p>
+</div>

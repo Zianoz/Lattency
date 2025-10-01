@@ -19,9 +19,9 @@ namespace Lattency.Repositories //Data access layer = DATABASE LOGIC ONLY!
             var person = await _context.Persons.Include(p => p.Bookings).ToListAsync();
             return person;
         }
-        public async Task<Person> GetPersonByUsernameAsync(string username)
+        public async Task<Person> GetPersonByEmailAsync(string email)
         {
-            return await _context.Persons.FirstOrDefaultAsync(p => p.Username == username);
+            return await _context.Persons.FirstOrDefaultAsync(p => p.Email == email);
         }
 
         public async Task<Person> GetPersonByIdAsync(int id)

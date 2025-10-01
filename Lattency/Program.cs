@@ -1,16 +1,16 @@
-
 using Lattency.Data;
 using Lattency.Repositories;
-using Lattency.Services.IServices;
+using Lattency.Repositories.IRepositories;
 using Lattency.Services;
+using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Lattency.Repositories.IRepositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
+using System.Text;
 
 namespace Lattency
 {
@@ -24,11 +24,28 @@ namespace Lattency
             builder.Services.AddDbContext<LattencyDBContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            //JWT Authentication
+
+            //Cookie Session support
+            builder.Services.AddDistributedMemoryCache(); // stores session in memory
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // optional: session lifetime
+                options.Cookie.HttpOnly = true; // secure cookie
+                options.Cookie.IsEssential = true;
+            });
+
+
+            //JWT Authentication for API and Cookies for Razor pages
             builder.Services.AddAuthentication(options =>
             {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Login/Index";
             })
             .AddJwtBearer(options =>
             {
@@ -43,6 +60,19 @@ namespace Lattency
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"])
                     ),
                     RoleClaimType = ClaimTypes.Role
+                };
+
+                //Allows JWT to come from cookies
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.ContainsKey("AuthToken"))
+                        {
+                            context.Token = context.Request.Cookies["AuthToken"];
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -60,9 +90,11 @@ namespace Lattency
             builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+            builder.Services.AddHttpContextAccessor();
 
-
+            //View Controller Service
             builder.Services.AddControllersWithViews();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
@@ -105,6 +137,9 @@ namespace Lattency
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            //To configure Cookie session
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();
