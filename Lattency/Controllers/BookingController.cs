@@ -1,5 +1,7 @@
 ﻿using Lattency.DTOs;
+using Lattency.Models;
 using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -18,30 +20,17 @@ namespace Lattency.Controllers
             return View();
         }
 
-
-        // POST: Handle form submission
         [HttpPost]
-        public async Task<IActionResult> Index(BookingDTO dto)
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult<Booking>> CreateBooking([FromForm] BookingDTO dto)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                ViewBag.Message = "You must log in to finalize your booking.";
-                return View();
-            }
-
             int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var booking = await _bookingService.CreateBookingAsync(personId, dto.CafeTableId, dto.ReservationStart, dto.NumGuests);
 
             if (booking == null)
-            {
-                ViewBag.Message = "Table is not available at the requested time.";
-            }
-            else
-            {
-                ViewBag.Message = "Booking confirmed! 🎉";
-            }
+                return BadRequest("Table is not available at the requested time.");
 
-            return View();
+            return Ok(booking);
         }
     }
 }

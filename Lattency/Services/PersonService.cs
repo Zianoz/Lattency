@@ -32,7 +32,7 @@ namespace Lattency.Services //Business logic layer
             return people.Select(p => new FetchPersonDTO
             {
                 Id = p.Id,
-                Name = p.Name,
+                Name = p.FullName,
                 Email = p.Email,
                 Number = p.Number,
                 Username = p.Username,
@@ -88,7 +88,7 @@ namespace Lattency.Services //Business logic layer
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password); //Hashes password using BCrypt
             var person = new Person //Creates a new Person Object
             {
-                Name = dto.Name,
+                FullName = dto.FullName,
                 Email = dto.Email,
                 Number = dto.Number,
                 Username = dto.Username,
@@ -105,7 +105,7 @@ namespace Lattency.Services //Business logic layer
             var person = await _personRepository.GetPersonByIdAsync(id);
             if (person == null) return null;
 
-            person.Name = dto.Name ?? person.Name;
+            person.FullName = dto.FullName ?? person.FullName;
             person.Email = dto.Email ?? person.Email;
             person.Number = dto.Number ?? person.Number;
             person.Username = dto.Username ?? person.Username;

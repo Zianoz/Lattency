@@ -11,10 +11,10 @@
 <div class="login-container">
     <h2 class="login-title">Create an Account</h2>
 
-    <form asp-controller="Account" asp-action="Register" method="post" class="login-form">
+    <form asp-action="CreatePerson" method="post" class="login-form">
         <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="Username" required />
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="FullName" required />
         </div>
 
         <div class="form-group">
@@ -32,10 +32,10 @@
             <input type="password" id="confirmPassword" name="ConfirmPassword" required />
         </div>
 
-        <button type="submit" class="login-btn">Register</button>
+        <button type="submit" class="btn-login">Register</button>
     </form>
 
-    <p class="login-footer">
+    <p class="register-link">
         Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a>
     </p>
 </div>

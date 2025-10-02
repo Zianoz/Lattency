@@ -77,7 +77,7 @@ namespace Lattency.Services
                 ReservationEnd = b.ReservationEnd,
                 NumGuests = b.NumGuests,
                 PersonId = b.FK_PersonId,
-                PersonName = b.Person.Name
+                PersonName = b.Person.FullName
             });
         }
 
@@ -93,7 +93,7 @@ namespace Lattency.Services
                 ReservationEnd = b.ReservationEnd,
                 NumGuests = b.NumGuests,
                 PersonId = b.FK_PersonId,
-                PersonName = b.Person.Name,
+                PersonName = b.Person.FullName,
                 Status = b.ReservationEnd > DateTime.UtcNow ? "Expired" : "Active"
             });
         }
