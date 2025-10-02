@@ -20,6 +20,25 @@ namespace Lattency.Services
         {
             return await _cafeTableRepository.GetAllCafeTablesAsync();
         }
+        public async Task<IEnumerable<CafeTable>> GetAllAvailableCafeTablesAsync()
+        {
+
+            return await _cafeTableRepository.GetAllAvailableCafeTablesAsync();
+
+        }
+
+        public async Task<CafeTable> SetAvailabilityAsync(int id)
+        {
+            var cafeTable = await _cafeTableRepository.GetCafeTableByIdAsync(id);
+            if (cafeTable != null)
+            {
+                cafeTable.Available = false;
+                await _cafeTableRepository.UpdateTableAsync(cafeTable);
+                await _cafeTableRepository.SaveChangesAsync();
+                return cafeTable;
+            }
+            return null!;
+        }
 
         public async Task<CafeTable> GetCafeTableByIdAsync(int id)
         {

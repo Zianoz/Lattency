@@ -4,6 +4,7 @@ using Lattency.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lattency.Migrations
 {
     [DbContext(typeof(LattencyDBContext))]
-    partial class LattencyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251002191456_AvailabilityToCafeTableModel")]
+    partial class AvailabilityToCafeTableModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,6 +76,7 @@ namespace Lattency.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("BildURL")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Capacity")
@@ -81,68 +85,6 @@ namespace Lattency.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CafeTables");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Available = true,
-                            Capacity = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Available = true,
-                            Capacity = 4
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Available = false,
-                            Capacity = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Available = true,
-                            Capacity = 6
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Available = true,
-                            Capacity = 4
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Available = true,
-                            Capacity = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Available = false,
-                            Capacity = 8
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Available = true,
-                            Capacity = 6
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Available = true,
-                            Capacity = 4
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Available = true,
-                            Capacity = 2
-                        });
                 });
 
             modelBuilder.Entity("Lattency.Models.Dish", b =>

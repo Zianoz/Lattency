@@ -11,10 +11,13 @@ namespace Lattency.Services
     public class BookingService : IBookingService
     {
         private readonly IBookingRepository _bookingRepository;
+        //Injecting CafeTableService to set CafeTable to false when booking is set.
+        private readonly ICafeTableService _CafeTableService;
 
-        public BookingService(IBookingRepository bookingRepository)
+        public BookingService(IBookingRepository bookingRepository, ICafeTableService cafeTableService)
         {
             _bookingRepository = bookingRepository;
+            _CafeTableService = cafeTableService;
         }
 
         public async Task<Booking?> CreateBookingAsync(int personId, int tableId, DateTime reservationStart, int numGuests)
@@ -48,6 +51,11 @@ namespace Lattency.Services
                 CreatedAt = DateTime.UtcNow
             };
 
+            var table = await _CafeTableService.GetCafeTableByIdAsync(tableId);
+
+            if (table == null)
+                return null; // or throw an exception if table doesn't exist
+            await _CafeTableService.SetAvailabilityAsync(tableId);
             await _bookingRepository.AddAsync(booking);
             await _bookingRepository.SaveChangesAsync();
 

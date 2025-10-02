@@ -11,6 +11,7 @@
 <div class="login-container">
     <h2 class="login-title">Create an Account</h2>
 
+    @* asp-action to call for a method, method="post" tells the form to use HTTP POST, asp-controller goes to view *@
     <form asp-action="CreatePerson" method="post" class="login-form">
         <div class="form-group">
             <label for="fullname">Full Name</label>
@@ -36,6 +37,6 @@
     </form>
 
     <p class="register-link">
-        Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a>
+        Already have an account? <a asp-controller="Index" asp-action="Login">Login here</a>
     </p>
 </div>

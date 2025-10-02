@@ -47,6 +47,19 @@ namespace Lattency.Data
                 new Dish { Id = 13, DishName = "Cheesecake", Description = "Creamy cheesecake with berry topping", Price = 55, MenuId = 5 },
                 new Dish { Id = 14, DishName = "Strawberry Cheesecake", Description = "Classic cheesecake topped with fresh strawberries", Price = 59, IsPopular = true, MenuId = 5 }
             );
+
+            modelBuilder.Entity<CafeTable>().HasData(
+                new CafeTable { Id = 1, Capacity = 2, Available = true, BildURL = null },
+                new CafeTable { Id = 2, Capacity = 4, Available = true, BildURL = null },
+                new CafeTable { Id = 3, Capacity = 2, Available = false, BildURL = null },
+                new CafeTable { Id = 4, Capacity = 6, Available = true, BildURL = null },
+                new CafeTable { Id = 5, Capacity = 4, Available = true, BildURL = null },
+                new CafeTable { Id = 6, Capacity = 2, Available = true, BildURL = null },
+                new CafeTable { Id = 7, Capacity = 8, Available = false, BildURL = null },
+                new CafeTable { Id = 8, Capacity = 6, Available = true, BildURL = null },
+                new CafeTable { Id = 9, Capacity = 4, Available = true, BildURL = null },
+                new CafeTable { Id = 10, Capacity = 2, Available = true, BildURL = null }
+            );
         }
 
     }

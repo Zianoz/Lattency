@@ -6,6 +6,8 @@ namespace Lattency.Services.IServices
     public interface ICafeTableService
     {
         Task<IEnumerable<CafeTable>> GetAllCafeTablesAsync();
+        Task<IEnumerable<CafeTable>> GetAllAvailableCafeTablesAsync();
+        Task<CafeTable> SetAvailabilityAsync(int id);
         Task<CafeTable> GetCafeTableByIdAsync(int id);
         Task<CafeTable> CreateCafeTableAsync(CafeTableDTO cafeTable);
         Task<bool> DeleteCafeTableAsync(int id);

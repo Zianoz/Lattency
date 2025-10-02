@@ -32,7 +32,7 @@ namespace Lattency.Controllers.Api
             if (booking == null)
                 return BadRequest("Table is not available at the requested time.");
 
-            return Ok(booking);
+            return Ok("Booking created!");
         }
 
         //Get bookings for logged-in customer

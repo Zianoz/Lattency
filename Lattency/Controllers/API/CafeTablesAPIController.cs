@@ -28,6 +28,13 @@ namespace Lattency.Controllers.API
             return Ok(cafeTables);
         }
 
+        [HttpGet("GetAllAvailableCafeTables")]
+        public async Task<ActionResult<IEnumerable<CafeTable>>> GetAllAvailableCafeTables()
+        {
+            var cafeTables = await _cafeTableService.GetAllAvailableCafeTablesAsync();
+            return Ok(cafeTables);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<CafeTable>> GetCafeTableByIdAsync(int id)
         {
