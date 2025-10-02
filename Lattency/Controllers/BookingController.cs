@@ -18,17 +18,13 @@ namespace Lattency.Controllers
             _bookingService = bookingService;
             _cafeTableService = cafeTableService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var tables = await _cafeTableService.GetAllAvailableCafeTablesAsync();
+            return View(tables);
         }
 
-        [HttpGet("GetAllAvailableCafeTables")]
-        public async Task<ActionResult<IEnumerable<CafeTable>>> GetAllAvailableCafeTables()
-        {
-            var cafeTables = await _cafeTableService.GetAllAvailableCafeTablesAsync();
-            return Ok(cafeTables);
-        }
+
 
         [HttpPost]
         [Authorize(Roles = "Customer")]

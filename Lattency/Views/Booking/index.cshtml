@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<Lattency.DTOs.CafeTableDTO>
+
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Booking";
@@ -7,18 +8,25 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/booking.css" />
 }
+
 <div class="booking-section">
-<div class="booking-container">
+    <div class="booking-container">
 
-    <form asp-action="CreateBooking" id="booking-form">
-        <select id="cafeTableId" name="CafeTableId"></select>
-        <input type="datetime-local" id="reservationStart" name="ReservationStart" />
-        <input type="number" id="numGuests" name="NumGuests" placeholder="Number of guests" />
-        <button type="submit">Book Now</button>
-    </form>
+        <form asp-action="CreateBookings" method="get" id="booking-form">
+            <select id="cafeTableId" name="CafeTableId">
+                @foreach (var table in Model)
+                {
+                    <option value="@table.Id">
+                        Table @table.Id - Capacity: @table.Capacity
+                    </option>
+                }
+            </select>
 
-<div id="responseMessage"></div>
+            <input type="datetime-local" id="reservationStart" name="ReservationStart" />
+            <input type="number" id="numGuests" name="NumGuests" placeholder="Number of guests" />
+            <button type="submit">Book Now</button>
+        </form>
+
+        <div id="responseMessage"></div>
+    </div>
 </div>
-</div>
-
-}
