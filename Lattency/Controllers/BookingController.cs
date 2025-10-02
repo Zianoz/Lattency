@@ -1,5 +1,6 @@
 ﻿using Lattency.DTOs;
 using Lattency.Models;
+using Lattency.Services;
 using Lattency.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +11,23 @@ namespace Lattency.Controllers
     public class BookingController : Controller
     {
         private readonly IBookingService _bookingService;
+        private readonly ICafeTableService _cafeTableService;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, ICafeTableService cafeTableService)
         {
             _bookingService = bookingService;
+            _cafeTableService = cafeTableService;
         }
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("GetAllAvailableCafeTables")]
+        public async Task<ActionResult<IEnumerable<CafeTable>>> GetAllAvailableCafeTables()
+        {
+            var cafeTables = await _cafeTableService.GetAllAvailableCafeTablesAsync();
+            return Ok(cafeTables);
         }
 
         [HttpPost]
