@@ -18,21 +18,21 @@ namespace Lattency.Controllers
             _bookingService = bookingService;
             _cafeTableService = cafeTableService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime reservationStart, int numGuests)
         {
-            var tables = await _cafeTableService.GetAllAvailableCafeTablesAsync();
-            return View(tables);
+            var tables = await _cafeTableService.GetAllAvailableCafeTablesAsync(reservationStart, numGuests);
+            return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> CheckAvailableTables(DateTime reservationStart, int numGuests)
+        public async Task<IActionResult> CheckAvailableTables([FromQuery] DateTime reservationStart, [FromQuery] int numGuests)
         {
             var tables = await _cafeTableService.GetAllAvailableCafeTablesAsync(reservationStart, numGuests);
-
             ViewBag.ReservationStart = reservationStart;
             ViewBag.NumGuests = numGuests;
 
-            return View("Booking", tables); // reuse Booking.cshtml with filtered tables
+            // Explicitly reuse the Index view
+            return View("Index", tables);
         }
 
         //Form sends in datetime and numguests, method fetches all bookings from repository and checks if table is available

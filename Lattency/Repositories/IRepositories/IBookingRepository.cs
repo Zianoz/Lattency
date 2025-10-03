@@ -24,5 +24,8 @@ namespace Lattency.Repositories.IRepositories
 
         // Persist all changes to the database
         Task SaveChangesAsync();
+
+        // Update database
+        Task UpdateAsync(Booking booking);
     }
 }

@@ -22,28 +22,56 @@ namespace Lattency.Services
         {
             return await _cafeTableRepository.GetAllCafeTablesAsync(); 
         }
+
         public async Task<IEnumerable<CafeTableDTO>> GetAllAvailableCafeTablesAsync(DateTime reservationStart, int numGuests)
         {
-
+            //Make it work
             var tables = await _cafeTableRepository.GetAllAvailableCafeTablesAsync();
             var bookings = await _bookingRepository.GetAllAsync();
 
-            bool overlaps = reservationStart < bookings.ReservationStart.AddHours(2)
-             && reservationStart >= bookings.ReservationStart;
+            var now = DateTime.Now; // use DateTime.UtcNow if your DB stores UTC
 
+            // Update expired bookings
+            var expiredBookings = bookings.Where(b => b.ReservationEnd <= now && b.Status == "Active");
+            foreach (var booking in expiredBookings)
+            {
+                booking.Status = "Expired";
+                await _bookingRepository.UpdateAsync(booking);
 
-            //FIX THIS SHIT
-            var tableDTO = tables.Select(dto => new CafeTableDTO
+                var table = tables.FirstOrDefault(t => t.Id == booking.FK_CafeTableId);
+                if (table != null)
+                {
+                    table.Available = true;
+                    await _cafeTableRepository.UpdateTableAsync(table);
+                }
+            }
+
+            await _cafeTableRepository.SaveChangesAsync();
+            await _bookingRepository.SaveChangesAsync();
+
+            // Filter available tables for the requested reservation
+            var availableTables = tables.Where(table =>
+                table.Capacity >= numGuests &&
+                table.Available &&
+                !bookings.Any(booking =>
+                    booking.FK_CafeTableId == table.Id &&
+                    booking.Status == "Active" &&
+                    reservationStart < booking.ReservationEnd &&
+                    reservationStart.AddHours(2) > booking.ReservationStart
+                )
+            );
+
+            var tableDTO = availableTables.Select(dto => new CafeTableDTO
             {
                 Id = dto.Id,
                 Available = dto.Available,
                 Capacity = dto.Capacity,
                 BildURL = dto.BildURL
             });
+
             return tableDTO;
-
-
         }
+
 
         public async Task<CafeTable> SetAvailabilityAsync(int id)
         {

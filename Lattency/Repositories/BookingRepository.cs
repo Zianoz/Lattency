@@ -2,6 +2,7 @@
 using Lattency.Models;
 using Lattency.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using System.Xml;
 
 namespace Lattency.Repositories
 {
@@ -63,6 +64,17 @@ namespace Lattency.Repositories
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Booking booking)
+        {
+            var trackedBooking = await _context.Bookings.FindAsync(booking.Id);
+            if (trackedBooking != null)
+            {
+                // update only the properties you need
+                trackedBooking.Status = booking.Status;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

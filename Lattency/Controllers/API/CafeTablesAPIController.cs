@@ -29,9 +29,9 @@ namespace Lattency.Controllers.API
         }
 
         [HttpGet("GetAllAvailableCafeTables")]
-        public async Task<ActionResult<IEnumerable<CafeTableDTO>>> GetAllAvailableCafeTables()
+        public async Task<ActionResult<IEnumerable<CafeTableDTO>>> GetAllAvailableCafeTables(DateTime reservationStart, int numGuests)
         {
-            var cafeTableDTO = await _cafeTableService.GetAllAvailableCafeTablesAsync();
+            var cafeTableDTO = await _cafeTableService.GetAllAvailableCafeTablesAsync(reservationStart, numGuests);
             return Ok(cafeTableDTO);
         }
 
