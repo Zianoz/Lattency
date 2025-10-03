@@ -24,13 +24,28 @@ namespace Lattency.Controllers
             return View(tables);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CheckAvailableTables(DateTime reservationStart, int numGuests)
+        {
+            var tables = await _cafeTableService.GetAllAvailableCafeTablesAsync(reservationStart, numGuests);
 
+            ViewBag.ReservationStart = reservationStart;
+            ViewBag.NumGuests = numGuests;
+
+            return View("Booking", tables); // reuse Booking.cshtml with filtered tables
+        }
+
+        //Form sends in datetime and numguests, method fetches all bookings from repository and checks if table is available
+        //by using reservationstart +- 2h window checkign against reservationend and reservationstart of existing bookings
 
         [HttpPost]
         [Authorize(Roles = "Customer")]
         public async Task<ActionResult<Booking>> CreateBooking([FromForm] BookingDTO dto)
         {
             int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (personId == 0)
+                return Unauthorized("User not found.");
+
             var booking = await _bookingService.CreateBookingAsync(personId, dto.CafeTableId, dto.ReservationStart, dto.NumGuests);
 
             if (booking == null)

@@ -55,6 +55,10 @@ namespace Lattency.Services
 
             if (table == null)
                 return null; // or throw an exception if table doesn't exist
+
+            if (numGuests > table.Capacity) { 
+                throw new InvalidOperationException("Number of guests exceeds table capacity.");
+            }
             await _CafeTableService.SetAvailabilityAsync(tableId);
             await _bookingRepository.AddAsync(booking);
             await _bookingRepository.SaveChangesAsync();

@@ -12,20 +12,32 @@
 <div class="booking-section">
     <div class="booking-container">
 
-        <form asp-action="CreateBookings" method="get" id="booking-form">
-            <select id="cafeTableId" name="CafeTableId">
-                @foreach (var table in Model)
-                {
-                    <option value="@table.Id">
-                        Table @table.Id - Capacity: @table.Capacity
-                    </option>
-                }
-            </select>
-
-            <input type="datetime-local" id="reservationStart" name="ReservationStart" />
-            <input type="number" id="numGuests" name="NumGuests" placeholder="Number of guests" />
-            <button type="submit">Book Now</button>
+        <form asp-action="CheckAvailableTables" method="get" id="check-form">
+            <input type="datetime-local" id="reservationStart" name="reservationStart" />
+            <input type="number" id="numGuests" name="numGuests" placeholder="Number of guests" />
+            <button type="submit">Check Available Tables</button>
         </form>
+
+        @if (Model != null && Model.Any())
+        {
+            <form asp-action="CreateBooking" method="post" id="booking-form">
+                <select id="cafeTableId" name="CafeTableId">
+                    @foreach (var table in Model)
+                    {
+                        <option value="@table.Id">
+                            Table @table.Id - Capacity: @table.Capacity
+                        </option>
+                    }
+                </select>
+
+                <!-- Keep the chosen date/time/guests in hidden fields -->
+                <input type="hidden" name="ReservationStart" value="@ViewBag.ReservationStart" />
+                <input type="hidden" name="NumGuests" value="@ViewBag.NumGuests" />
+
+                <button type="submit">Book Now</button>
+            </form>
+        }
+
 
         <div id="responseMessage"></div>
     </div>

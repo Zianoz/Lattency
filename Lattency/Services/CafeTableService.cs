@@ -10,21 +10,29 @@ namespace Lattency.Services
     public class CafeTableService : ICafeTableService
     {
         private readonly ICafeTableRepository _cafeTableRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public CafeTableService(ICafeTableRepository cafeTableRepository)
+        public CafeTableService(ICafeTableRepository cafeTableRepository, IBookingRepository bookingRepository)
         {
             _cafeTableRepository = cafeTableRepository;
+            _bookingRepository = bookingRepository;
         }
 
         public async Task<IEnumerable<CafeTable>> GetAllCafeTablesAsync()
         {
-            return await _cafeTableRepository.GetAllCafeTablesAsync();
+            return await _cafeTableRepository.GetAllCafeTablesAsync(); 
         }
-        public async Task<IEnumerable<CafeTableDTO>> GetAllAvailableCafeTablesAsync()
+        public async Task<IEnumerable<CafeTableDTO>> GetAllAvailableCafeTablesAsync(DateTime reservationStart, int numGuests)
         {
 
             var tables = await _cafeTableRepository.GetAllAvailableCafeTablesAsync();
+            var bookings = await _bookingRepository.GetAllAsync();
 
+            bool overlaps = reservationStart < bookings.ReservationStart.AddHours(2)
+             && reservationStart >= bookings.ReservationStart;
+
+
+            //FIX THIS SHIT
             var tableDTO = tables.Select(dto => new CafeTableDTO
             {
                 Id = dto.Id,
@@ -33,6 +41,7 @@ namespace Lattency.Services
                 BildURL = dto.BildURL
             });
             return tableDTO;
+
 
         }
 
