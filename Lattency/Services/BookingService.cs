@@ -59,7 +59,7 @@ namespace Lattency.Services
             if (numGuests > table.Capacity) { 
                 throw new InvalidOperationException("Number of guests exceeds table capacity.");
             }
-            await _CafeTableService.SetAvailabilityAsync(tableId);
+
             await _bookingRepository.AddAsync(booking);
             await _bookingRepository.SaveChangesAsync();
 

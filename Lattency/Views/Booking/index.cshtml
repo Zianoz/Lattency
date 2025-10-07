@@ -13,7 +13,7 @@
     <div class="booking-container">
 
         <form asp-controller="Booking" asp-action="CheckAvailableTables" method="get" id="check-form">
-            <input type="datetime-local" id="reservationStart" name="reservationStart" />
+            <input type="datetime-local" id="reservationStart" name="reservationStart" step="1800" />
             <input type="number" id="numGuests" name="numGuests" placeholder="Number of guests" />
             <button type="submit">Check Available Tables</button>
         </form>

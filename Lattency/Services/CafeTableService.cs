@@ -23,33 +23,12 @@ namespace Lattency.Services
             return await _cafeTableRepository.GetAllCafeTablesAsync(); 
         }
 
-        public async Task<IEnumerable<CafeTableDTO>> GetAllAvailableCafeTablesAsync(DateTime reservationStart, int numGuests)
+        public async Task<IEnumerable<CafeTableDTO>> GetAllAvailableCafeTablesAsync(DateTime reservationStart, int numGuests) //took me too long to write this asjidasjidjias
         {
-            //Make it work
-            var tables = await _cafeTableRepository.GetAllAvailableCafeTablesAsync();
-            var bookings = await _bookingRepository.GetAllAsync();
+            //Fetch current state of bookings and cafetables then update statuses
+            var (tables, bookings) = await UpdateBookingAndTableStatus();
 
-            var now = DateTime.Now; // use DateTime.UtcNow if your DB stores UTC
-
-            // Update expired bookings
-            var expiredBookings = bookings.Where(b => b.ReservationEnd <= now && b.Status == "Active");
-            foreach (var booking in expiredBookings)
-            {
-                booking.Status = "Expired";
-                await _bookingRepository.UpdateAsync(booking);
-
-                var table = tables.FirstOrDefault(t => t.Id == booking.FK_CafeTableId);
-                if (table != null)
-                {
-                    table.Available = true;
-                    await _cafeTableRepository.UpdateTableAsync(table);
-                }
-            }
-
-            await _cafeTableRepository.SaveChangesAsync();
-            await _bookingRepository.SaveChangesAsync();
-
-            // Filter available tables for the requested reservation
+            //Filter available tables for the requested reservation
             var availableTables = tables.Where(table =>
                 table.Capacity >= numGuests &&
                 table.Available &&
@@ -72,18 +51,37 @@ namespace Lattency.Services
             return tableDTO;
         }
 
-
-        public async Task<CafeTable> SetAvailabilityAsync(int id)
+        public async Task<(IEnumerable<CafeTable> tables, IEnumerable<Booking> bookings)> UpdateBookingAndTableStatus()
         {
-            var cafeTable = await _cafeTableRepository.GetCafeTableByIdAsync(id);
-            if (cafeTable != null)
+            var tables = await _cafeTableRepository.GetAllCafeTablesAsync();
+            var bookings = await _bookingRepository.GetAllAsync();
+            
+            var now = DateTime.Now;
+            foreach (var booking in bookings)
             {
-                cafeTable.Available = false;
-                await _cafeTableRepository.UpdateTableAsync(cafeTable);
-                await _cafeTableRepository.SaveChangesAsync();
-                return cafeTable;
+                if (now > booking.ReservationEnd && booking.Status != "Expired" && booking.CafeTable.Available == false)
+                {
+                    booking.Status = "Expired";
+                    booking.CafeTable.Available = true;
+                    await _bookingRepository.UpdateAsync(booking);
+                    await _cafeTableRepository.UpdateTableAsync(booking.CafeTable);
+                }
+                else if (now >= booking.ReservationStart && now <= booking.ReservationEnd && booking.Status != "Ongoing")
+                {
+                    booking.Status = "Ongoing";
+                    await _bookingRepository.UpdateAsync(booking);
+                }
+                else if (now < booking.ReservationStart && booking.Status != "Booked")
+                {
+                    booking.Status = "Booked";
+                    await _bookingRepository.UpdateAsync(booking);
+                }
             }
-            return null!;
+
+            await _cafeTableRepository.SaveChangesAsync();
+            await _bookingRepository.SaveChangesAsync();
+
+            return (tables, bookings);
         }
 
         public async Task<CafeTable> GetCafeTableByIdAsync(int id)

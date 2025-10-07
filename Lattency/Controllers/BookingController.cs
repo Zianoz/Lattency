@@ -1,5 +1,6 @@
 ﻿using Lattency.DTOs;
 using Lattency.Models;
+using Lattency.Models.ViewModels;
 using Lattency.Services;
 using Lattency.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -24,19 +25,19 @@ namespace Lattency.Controllers
             return View();
         }
 
+        //Form sends in datetime and numguests, method fetches all bookings from repository and checks if table is available
+        //by using reservationstart +- 2h window checkign against reservationend and reservationstart of existing bookings
         [HttpGet]
-        public async Task<IActionResult> CheckAvailableTables([FromQuery] DateTime reservationStart, [FromQuery] int numGuests)
+        public async Task<IActionResult> CheckAvailableTables(CafeTableSearchModel input)
         {
+            DateTime reservationStart = input.ReservationStart;
+            int numGuests = input.NumGuests;
+
             var tables = await _cafeTableService.GetAllAvailableCafeTablesAsync(reservationStart, numGuests);
-            ViewBag.ReservationStart = reservationStart;
-            ViewBag.NumGuests = numGuests;
 
             // Explicitly reuse the Index view
             return View("Index", tables);
         }
-
-        //Form sends in datetime and numguests, method fetches all bookings from repository and checks if table is available
-        //by using reservationstart +- 2h window checkign against reservationend and reservationstart of existing bookings
 
         [HttpPost]
         [Authorize(Roles = "Customer")]
@@ -44,7 +45,7 @@ namespace Lattency.Controllers
         {
             int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (personId == 0)
-                return Unauthorized("User not found.");
+                return Unauthorized("Please sign in to create a booking");
 
             var booking = await _bookingService.CreateBookingAsync(personId, dto.CafeTableId, dto.ReservationStart, dto.NumGuests);
 

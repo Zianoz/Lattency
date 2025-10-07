@@ -7,9 +7,9 @@ namespace Lattency.Services.IServices
     {
         Task<IEnumerable<CafeTable>> GetAllCafeTablesAsync();
         Task<IEnumerable<CafeTableDTO>> GetAllAvailableCafeTablesAsync(DateTime reservationStart, int numGuests);
-        Task<CafeTable> SetAvailabilityAsync(int id);
         Task<CafeTable> GetCafeTableByIdAsync(int id);
         Task<CafeTable> CreateCafeTableAsync(CafeTableDTO cafeTable);
         Task<bool> DeleteCafeTableAsync(int id);
+        Task<(IEnumerable<CafeTable> tables, IEnumerable<Booking> bookings)> UpdateBookingAndTableStatus();
     }
 }
