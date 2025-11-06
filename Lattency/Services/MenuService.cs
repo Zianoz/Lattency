@@ -21,9 +21,8 @@ namespace Lattency.Services
                 Id = dto.Id,
                 Name = dto.Name,
                 Dishes = new List<Dish>()
-
-
             };
+
             await _menuRepository.AddAsync(menu);
             await _menuRepository.SaveChangesAsync();
             return menu;

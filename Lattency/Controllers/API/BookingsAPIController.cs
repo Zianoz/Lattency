@@ -24,9 +24,9 @@ namespace Lattency.Controllers.Api
         //Create a booking
         [HttpPost]
         [Authorize(Roles = "Customer")]
-        public async Task<ActionResult<Booking>> CreateBooking([FromBody] BookingDTO dto)
+        public async Task<ActionResult<Booking>> CreateBooking(BookingDTO dto)
         {
-            int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            int personId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); //Gets the logged-in users ID from the JWT token
             var booking = await _bookingService.CreateBookingAsync(personId, dto.CafeTableId, dto.ReservationStart, dto.NumGuests);
 
             if (booking == null)
@@ -36,7 +36,7 @@ namespace Lattency.Controllers.Api
         }
 
         //Get bookings for logged-in customer
-        [HttpGet("me")]
+        [HttpGet("mybookings")]
         [Authorize(Roles = "Customer")]
         public async Task<ActionResult<IEnumerable<BookingResponseDTO>>> GetMyBookings()
         {

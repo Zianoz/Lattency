@@ -21,7 +21,7 @@ namespace Lattency.Controllers.Api
 
         [HttpPost("CreateMenu")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Menu>> CreateMenuAsync([FromBody] MenuCreationDTO dto)
+        public async Task<ActionResult<Menu>> CreateMenuAsync(MenuCreationDTO dto)
         {
             if (dto == null)
             {
@@ -30,12 +30,12 @@ namespace Lattency.Controllers.Api
 
             var createdMenu = await _menuService.CreateMenuAsync(dto);
 
-            return Ok(createdMenu);
+            return CreatedAtAction(nameof(GetMenuByIdAsync), new { id = createdMenu.Id }, createdMenu);
         }
 
         [HttpPost("AddDish")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Dish>> CreateDishtoMenuIdAsync(int menuId, [FromBody] DishCreationDTO dto)
+        public async Task<ActionResult<Dish>> CreateDishtoMenuIdAsync(int menuId, DishCreationDTO dto)
         {
             if (dto == null)
             {
