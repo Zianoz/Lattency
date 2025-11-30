@@ -1,7 +1,10 @@
 ﻿using Lattency.DTOs;
+using Lattency.Mappers.DTOMappers;
 using Lattency.Models;
 using Lattency.Repositories.IRepositories;
 using Lattency.Services.IServices;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lattency.Services
@@ -50,6 +53,28 @@ namespace Lattency.Services
             await _menuRepository.UpdateAsync(menu);
             await _menuRepository.SaveChangesAsync();
             return dish;
+        }
+
+        public async Task<Dish>UpdateDishInMenuAsync(int menuId, int dishId, UpdateDishDTO dto)
+        {
+            var menu = await _menuRepository.GetByIdAsync(menuId);
+            if (menu == null)
+            {
+                return null;
+            }
+            var dish = menu.Dishes.FirstOrDefault(d => d.Id == dishId);
+            if (dish == null)
+            {
+                return null;
+            }
+            
+            // Fix: Parameters were reversed - DTO comes first, then dish
+            var updatedDish = UpdateDishDTOMapper.UpdateDishByDTO(dto, dish);
+            
+            // Entity Framework tracks changes automatically, just need to update and save
+            await _menuRepository.UpdateAsync(menu);
+            await _menuRepository.SaveChangesAsync();
+            return updatedDish;
         }
 
         public async Task<IActionResult> DeleteMenuByIdAsync(int id)

@@ -1,0 +1,60 @@
+@model Lattency.Models.Menu
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Menu Details";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<div class="admin-section">
+    <div class="admin-header">
+        <h1>@Model.Name</h1>
+        <div>
+            <a asp-action="CreateDish" asp-route-menuId="@Model.Id" class="btn btn-success">+ Add Dish</a>
+            <a asp-action="Menus" class="btn btn-secondary">? Back to Menus</a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <h2>Dishes</h2>
+    @if (Model.Dishes != null && Model.Dishes.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Popular</th>
+                    <th>Image URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dish in Model.Dishes)
+                {
+                    <tr>
+                        <td>@dish.Id</td>
+                        <td>@dish.DishName</td>
+                        <td>@dish.Description</td>
+                        <td>@dish.Price.ToString("C")</td>
+                        <td>@(dish.IsPopular ? "?" : "-")</td>
+                        <td>@(string.IsNullOrEmpty(dish.ImageURL) ? "-" : dish.ImageURL)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="no-data">No dishes in this menu. <a asp-action="CreateDish" asp-route-menuId="@Model.Id">Add your first dish</a></p>
+    }
+</div>

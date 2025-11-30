@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Lattency.Controllers.Api
 {
@@ -43,6 +44,14 @@ namespace Lattency.Controllers.Api
             }
             var createdDish = await _menuService.CreateDishtoMenuIdAsync(menuId, dto);
             return Ok(createdDish);
+        }
+
+        [HttpPut("UpdateDish")]
+        public async Task<ActionResult<Dish>> UpdateDishInMenuAsync(int menuId, int dishId, UpdateDishDTO dto)
+        {
+            var updatedDish = await _menuService.UpdateDishInMenuAsync(menuId, dishId, dto);
+
+            return Ok(updatedDish);
         }
 
         [HttpPost("GetAllMenus")]

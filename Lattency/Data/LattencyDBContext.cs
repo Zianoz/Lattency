@@ -28,7 +28,7 @@ namespace Lattency.Data
             // Seed Dishes
             modelBuilder.Entity<Dish>().HasData(
                 // Drinks
-                new Dish { Id = 1, DishName = "Espresso", Description = "Rich and bold single shot of espresso", Price = 25, IsPopular = true, MenuId = 4 },
+                new Dish { Id = 1, DishName = "Espresso", Description = "Rich and bold single shot of espresso", Price = 25, IsPopular = true, ImageURL = "/images/menu/Espresso.png", MenuId = 4 },
                 new Dish { Id = 2, DishName = "Cappuccino", Description = "Espresso with steamed milk and foam", Price = 39, MenuId = 4 },
                 new Dish { Id = 3, DishName = "Latte", Description = "Smooth espresso with lots of steamed milk", Price = 42, IsPopular = true, MenuId = 4 },
                 new Dish { Id = 4, DishName = "Iced Latte", Description = "Cold espresso with milk over ice", Price = 45, MenuId = 4 },

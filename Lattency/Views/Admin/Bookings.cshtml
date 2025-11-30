@@ -1,0 +1,77 @@
+@model IEnumerable<Lattency.DTOs.BookingResponseDTO>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Manage Bookings";
+    ViewData["Description"] = "Manage all bookings";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<div class="admin-section">
+    <div class="admin-header">
+        <h1>Manage Bookings</h1>
+        <a asp-action="Index" class="btn btn-secondary">? Back to Dashboard</a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Table</th>
+                    <th>Guests</th>
+                    <th>Reservation Start</th>
+                    <th>Reservation End</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>@booking.Id</td>
+                        <td>@booking.PersonName</td>
+                        <td>Table @booking.CafeTableId</td>
+                        <td>@booking.NumGuests</td>
+                        <td>@booking.ReservationStart.ToString("g")</td>
+                        <td>@booking.ReservationEnd.ToString("g")</td>
+                        <td>
+                            <span class="status-badge @(booking.Status == "Active" ? "status-active" : "status-expired")">
+                                @booking.Status
+                            </span>
+                        </td>
+                        <td>
+                            <form asp-action="DeleteBooking" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this booking?');">
+                                <input type="hidden" name="id" value="@booking.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="no-data">No bookings found.</p>
+    }
+</div>

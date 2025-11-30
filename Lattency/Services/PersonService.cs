@@ -85,7 +85,7 @@ namespace Lattency.Services //Business logic layer
         //Gets DTO from PersonController > IPersonService
         public async Task<Person> CreatePersonAsync(PersonDTO dto)
         {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password); //Hashes password using BCrypt
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password); //Hashes password using BCrypt //Next time use ASP.NET Identity because it does alot of thing automatically for you
             var person = new Person //Creates a new Person Object
             {
                 FullName = dto.FullName,

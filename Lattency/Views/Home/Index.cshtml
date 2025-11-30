@@ -8,14 +8,81 @@
     <link rel="stylesheet" href="~/css/home.css" />
 }
 
+<!-- Overlay Section -->
 <section class="hero">
-    <div class="hero-text">
-        <h1>Welcome to Lattency!</h1>
-        <p>
-            At Lattency Café, coffee meets creativity. Inspired by the world of technology and connection,
-            we craft every cup with precision and speed—without sacrificing quality. Whether you’re here to power through code,
-            brainstorm with friends, or simply enjoy a perfectly brewed latte,
-            Lattency is your hub for great taste and great ideas. Fast service, smooth blends, zero lag.
-        </p>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">Welcome to Lattency</h1>
+        <p class="hero-subtitle">Where Coffee Meets Creativity</p>
+        <div class="hero-buttons">
+            <a asp-controller="Menu" asp-action="Index" class="btn-primary-hero">View Menu</a>
+            <a asp-controller="Booking" asp-action="Index" class="btn-secondary-hero">Book a Table</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="about-container">
+        <div class="about-content">
+            <div class="coffee-icon">☕</div>
+            <h2>Crafted with Precision</h2>
+            <p>
+                At Lattency Café, coffee meets creativity. Inspired by the world of technology and connection,
+                we craft every cup with precision and speed—without sacrificing quality.
+            </p>
+        </div>
+        <div class="about-content">
+            <div class="coffee-icon">💡</div>
+            <h2>Your Creative Hub</h2>
+            <p>
+                Whether you're here to power through code, brainstorm with friends, or simply enjoy a perfectly brewed latte,
+                Lattency is your hub for great taste and great ideas.
+            </p>
+        </div>
+        <div class="about-content">
+            <div class="coffee-icon">⚡</div>
+            <h2>Fast & Smooth</h2>
+            <p>
+                Fast service, smooth blends, zero lag. Experience the perfect balance of speed and quality
+                in every cup we serve.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <h2 class="section-title">Why Choose Lattency?</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-number">01</div>
+            <h3>Premium Beans</h3>
+            <p>Sourced from the finest coffee regions around the world</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-number">02</div>
+            <h3>Expert Baristas</h3>
+            <p>Trained artisans who pour passion into every cup</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-number">03</div>
+            <h3>Cozy Atmosphere</h3>
+            <p>Perfect ambiance for work, study, or relaxation</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-number">04</div>
+            <h3>Fresh Pastries</h3>
+            <p>Delicious treats baked fresh daily to complement your coffee</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready for Your Perfect Cup?</h2>
+        <p>Visit us today or book a table for your next meeting</p>
+        <a asp-controller="Booking" asp-action="Index" class="btn-cta">Reserve Your Spot</a>
     </div>
 </section>

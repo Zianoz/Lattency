@@ -1,66 +1,336 @@
-﻿
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
-.menu-page {
-    max-width: 800px;
-    margin: 6rem auto;
-    padding: 2rem;
-    background: #fffaf0; /* light coffee cream background */
-    color: #3e2723; /* dark coffee brown */
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+:root {
+    --latte-cream: #F5E6D3;
+    --latte-brown: #8B6F47;
+    --dark-coffee: #3E2723;
+    --espresso: #2C1810;
+    --cream-white: #FFFBF5;
+    --caramel: #C8A882;
+    --foam-white: #FFF9F0;
+    --light-brown: #A89078;
 }
 
-.menu-title {
-    text-align: center;
-    font-family: 'Outfit', sans-serif;
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    color: #5d4037;
-}
-
-.menu-section {
-    margin-bottom: 2.5rem;
-}
-
-.menu-name {
-    font-size: 2rem;
-    font-family: 'Dancing Script', cursive; /* gives it a handwritten café vibe */
-    margin-bottom: 1rem;
-    color: #6d4c41;
-    border-bottom: 2px solid #d7ccc8;
-    display: inline-block;
-    padding-bottom: 5px;
-}
-
-/* --- Dishes --- */
-.dish-list {
-    list-style: none;
-    padding: 0;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.dish-item {
+/* Menu Hero Section */
+.menu-hero {
+    background: linear-gradient(135deg, rgba(139, 111, 71, 0.95) 0%, rgba(62, 39, 35, 0.9) 100%),
+                url('../images/coffee.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 60vh;
     display: flex;
-    justify-content: space-between;
-    padding: 0.7rem 0;
-    border-bottom: 1px dotted #a1887f;
-    font-size: 1.1rem;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+}
+
+.menu-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(44, 24, 16, 0.2) 100%);
+}
+
+.menu-hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.menu-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: 3px;
+}
+
+.menu-hero-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    opacity: 0.95;
+}
+
+/* Menu Container */
+.menu-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    background: linear-gradient(180deg, var(--foam-white) 0%, var(--latte-cream) 50%, var(--foam-white) 100%);
+}
+
+/* Menu Category */
+.menu-category {
+    margin-bottom: 80px;
+}
+
+.category-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.category-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--dark-coffee);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.category-line {
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--caramel), transparent);
+    margin: 0 auto;
+}
+
+/* Dishes Grid */
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 35px;
+}
+
+/* Dish Card */
+.dish-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(139, 111, 71, 0.15);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.dish-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 45px rgba(139, 111, 71, 0.25);
+}
+
+.popular-dish {
+    border: 2px solid var(--caramel);
+}
+
+.popular-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
+}
+
+/* Dish Image */
+.dish-image {
+    width: 100%;
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.dish-image-placeholder {
+    background: linear-gradient(135deg, var(--latte-cream) 0%, var(--caramel) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dish-emoji {
+    font-size: 5rem;
+    filter: opacity(0.6);
+}
+
+/* Dish Content */
+.dish-content {
+    padding: 25px;
 }
 
 .dish-name {
-    font-weight: 500;
-}
-
-.dish-price {
-    font-weight: bold;
-    color: #4e342e;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--dark-coffee);
+    margin-bottom: 12px;
+    font-weight: 600;
 }
 
 .dish-description {
-    font-weight: 300;
+    color: var(--light-brown);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    min-height: 50px;
 }
 
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--latte-cream);
+}
+
+.dish-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--latte-brown);
+}
+
+/* Coming Soon */
 .coming-soon {
-    font-style: italic;
-    color: #8d6e63;
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(139, 111, 71, 0.1);
+}
+
+.coming-soon-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.coming-soon em {
+    font-size: 1.3rem;
+    color: var(--light-brown);
+}
+
+/* No Menu */
+.no-menu {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.no-menu-icon {
+    font-size: 6rem;
+    display: block;
+    margin-bottom: 30px;
+    filter: grayscale(0.3);
+}
+
+.no-menu h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--dark-coffee);
+    margin-bottom: 15px;
+}
+
+.no-menu p {
+    font-size: 1.2rem;
+    color: var(--light-brown);
+}
+
+/* Menu CTA Section */
+.menu-cta-section {
+    background: linear-gradient(135deg, var(--latte-brown) 0%, var(--caramel) 100%);
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-cta-section::before {
+    content: '☕';
+    position: absolute;
+    font-size: 20rem;
+    opacity: 0.05;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+}
+
+.menu-cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.menu-cta-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.menu-cta-content p {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 35px;
+}
+
+.btn-menu-cta {
+    display: inline-block;
+    padding: 18px 45px;
+    background: white;
+    color: var(--dark-coffee);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.btn-menu-cta:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .menu-hero-title {
+        font-size: 3rem;
+    }
+    
+    .menu-hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .category-name {
+        font-size: 2.2rem;
+    }
+    
+    .dishes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-cta-content h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .dish-name {
+        font-size: 1.4rem;
+    }
+    
+    .dish-price {
+        font-size: 1.5rem;
+    }
 }

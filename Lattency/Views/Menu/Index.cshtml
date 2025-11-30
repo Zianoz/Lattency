@@ -10,32 +10,87 @@
     <link rel="stylesheet" href="~/css/menu.css" />
 }
 
-<div class="menu-page">
-    <h1 class="menu-title">Our Menu</h1>
+<!-- Menu Hero Section -->
+<section class="menu-hero">
+    <div class="menu-hero-overlay"></div>
+    <div class="menu-hero-content">
+        <h1 class="menu-hero-title">Our Menu</h1>
+        <p class="menu-hero-subtitle">Handcrafted beverages & delicious treats</p>
+    </div>
+</section>
 
-    @foreach (var menu in Model)
+<!-- Menu Content Section -->
+<div class="menu-container">
+    @if (Model != null && Model.Any())
     {
-        <div class="menu-section">
-            <h2 class="menu-name">@menu.Name</h2>
-            @if (menu.Dishes != null && menu.Dishes.Any())
-            {
-                <ul class="dish-list">
-                    @foreach (var dish in menu.Dishes)
-                    {
-                        <li class="dish-item">
-                            <span class="dish-name">@dish.DishName</span>
-                            <span class="dish-description">@dish.Description</span>               
-                            <span class="dish-price">@dish.Price kr</span>
-                        </li>
-                    }
-                </ul>
-            }
-            else
-            {
-                <p class="coming-soon"><em>Coming soon...</em></p>
-            }
+        @foreach (var menu in Model)
+        {
+            <div class="menu-category">
+                <div class="category-header">
+                    <h2 class="category-name">@menu.Name</h2>
+                    <div class="category-line"></div>
+                </div>
+
+                @if (menu.Dishes != null && menu.Dishes.Any())
+                {
+                    <div class="dishes-grid">
+                        @foreach (var dish in menu.Dishes)
+                        {
+                            <div class="dish-card @(dish.IsPopular ? "popular-dish" : "")">
+                                @if (dish.IsPopular)
+                                {
+                                    <span class="popular-badge">⭐ Popular</span>
+                                }
+                                
+                                @if (!string.IsNullOrEmpty(dish.ImageURL))
+                                {
+                                    <div class="dish-image" style="background-image: url('@dish.ImageURL')"></div>
+                                }
+                                else
+                                {
+                                    <div class="dish-image dish-image-placeholder">
+                                        <span class="dish-emoji">☕</span>
+                                    </div>
+                                }
+                                
+                                <div class="dish-content">
+                                    <h3 class="dish-name">@dish.DishName</h3>
+                                    <p class="dish-description">@dish.Description</p>
+                                    <div class="dish-footer">
+                                        <span class="dish-price">@dish.Price.ToString("N0") kr</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="coming-soon">
+                        <span class="coming-soon-icon">🔜</span>
+                        <em>New items coming soon...</em>
+                    </p>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-menu">
+            <span class="no-menu-icon">☕</span>
+            <h2>Menu Coming Soon</h2>
+            <p>We're crafting something special for you!</p>
         </div>
     }
 </div>
+
+<!-- CTA Section -->
+<section class="menu-cta-section">
+    <div class="menu-cta-content">
+        <h2>Ready to Order?</h2>
+        <p>Reserve your table and enjoy our delicious offerings</p>
+        <a asp-controller="Booking" asp-action="Index" class="btn-menu-cta">Book a Table</a>
+    </div>
+</section>
 
 

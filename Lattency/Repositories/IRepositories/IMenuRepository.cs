@@ -10,7 +10,5 @@ namespace Lattency.Repositories.IRepositories
         Task SaveChangesAsync();
         Task DeleteAsync(Menu menu);
         Task UpdateAsync(Menu menu);
-
-
     }
 }

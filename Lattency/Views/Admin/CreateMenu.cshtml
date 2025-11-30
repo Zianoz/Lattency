@@ -1,0 +1,26 @@
+@model Lattency.DTOs.MenuCreationDTO
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create Menu";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<div class="admin-section">
+    <div class="admin-header">
+        <h1>Create New Menu</h1>
+        <a asp-action="Menus" class="btn btn-secondary">? Back to Menus</a>
+    </div>
+
+    <form asp-action="CreateMenu" method="post" class="admin-form">
+        <div class="form-group">
+            <label for="Name">Menu Name</label>
+            <input type="text" id="Name" name="Name" class="form-control" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Create Menu</button>
+    </form>
+</div>

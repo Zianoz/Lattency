@@ -1,0 +1,32 @@
+@model Lattency.DTOs.CafeTableDTO
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create Table";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<div class="admin-section">
+    <div class="admin-header">
+        <h1>Create New Table</h1>
+        <a asp-action="Tables" class="btn btn-secondary">? Back to Tables</a>
+    </div>
+
+    <form asp-action="CreateTable" method="post" class="admin-form">
+        <div class="form-group">
+            <label for="Capacity">Capacity (number of seats)</label>
+            <input type="number" id="Capacity" name="Capacity" class="form-control" min="1" required />
+            <span asp-validation-for="Capacity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="BildURL">Image URL (optional)</label>
+            <input type="text" id="BildURL" name="BildURL" class="form-control" />
+            <span asp-validation-for="BildURL" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Create Table</button>
+    </form>
+</div>

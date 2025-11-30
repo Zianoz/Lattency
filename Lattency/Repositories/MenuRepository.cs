@@ -17,30 +17,33 @@ namespace Lattency.Repositories
         public async Task<Menu?> GetByIdAsync(int id)
         {
             return await _context.Menus.Include(m=>m.Dishes).FirstOrDefaultAsync(m => m.Id == id);
-            //return await _context.Menus.FindAsync(id);
         }
+        
         public async Task<IEnumerable<Menu>> GetAllAsync()
         {
             return await _context.Menus.Include(m=>m.Dishes).ToListAsync();
         }
+        
         public async Task AddAsync(Menu menu)
         {
             await _context.Menus.AddAsync(menu);
         }
+        
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
+        
         public async Task DeleteAsync(Menu menu)
         {
             _context.Menus.Remove(menu);
             await Task.CompletedTask;
         }
+        
         public async Task UpdateAsync(Menu menu)
         {
             _context.Menus.Update(menu);
             await Task.CompletedTask;
         }
-
     }
 }

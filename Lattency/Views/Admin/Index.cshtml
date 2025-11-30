@@ -1,8 +1,52 @@
 ﻿@{
     Layout = "_Layout";
-    ViewData["Title"] = "Admin";
-    ViewData["Description"] = "Administrator page";
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Description"] = "Administrator Dashboard";
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/admin.css" />
 }
+
+<div class="admin-dashboard">
+    <h1>Administrator Dashboard</h1>
+    
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="admin-menu">
+        <div class="admin-card">
+            <h2>Bookings</h2>
+            <p>Manage all restaurant bookings</p>
+            <a asp-action="Bookings" class="btn btn-primary">View Bookings</a>
+        </div>
+
+        <div class="admin-card">
+            <h2>Menus & Dishes</h2>
+            <p>Manage menus and dishes</p>
+            <a asp-action="Menus" class="btn btn-primary">View Menus</a>
+        </div>
+
+        <div class="admin-card">
+            <h2>Tables</h2>
+            <p>Manage cafe tables</p>
+            <a asp-action="Tables" class="btn btn-primary">View Tables</a>
+        </div>
+
+        <div class="admin-card">
+            <h2>Users</h2>
+            <p>Manage user accounts</p>
+            <a asp-action="Users" class="btn btn-primary">View Users</a>
+        </div>
+    </div>
+</div>

@@ -9,36 +9,131 @@
     <link rel="stylesheet" href="~/css/booking.css" />
 }
 
-<div class="booking-section">
+<!-- Booking Overlay Section -->
+<section class="booking-hero">
+    <div class="booking-hero-overlay"></div>
+    <div class="booking-hero-content">
+        <h1 class="booking-hero-title">Reserve Your Table</h1>
+        <p class="booking-hero-subtitle">Secure your spot at Lattency Café</p>
+    </div>
+</section>
+
+<!-- Booking Content -->
+<div class="booking-wrapper">
     <div class="booking-container">
-
-        <form asp-controller="Booking" asp-action="CheckAvailableTables" method="get" id="check-form">
-            <input type="datetime-local" id="reservationStart" name="reservationStart" step="1800" />
-            <input type="number" id="numGuests" name="numGuests" placeholder="Number of guests" />
-            <button type="submit">Check Available Tables</button>
-        </form>
-
-        @if (Model != null && Model.Any())
+        
+        @if (TempData["SuccessMessage"] != null)
         {
-            <form asp-action="CreateBooking" method="post" id="booking-form">
-                <select id="cafeTableId" name="CafeTableId">
-                    @foreach (var table in Model)
-                    {
-                        <option value="@table.Id">
-                            Table @table.Id - Capacity: @table.Capacity
-                        </option>
-                    }
-                </select>
-
-                <!-- Keep the chosen date/time/guests in hidden fields -->
-                <input type="hidden" name="ReservationStart" value="@ViewBag.ReservationStart" />
-                <input type="hidden" name="NumGuests" value="@ViewBag.NumGuests" />
-
-                <button type="submit">Book Now</button>
-            </form>
+            <div class="alert alert-success">
+                <span class="alert-icon">✓</span>
+                <span>@TempData["SuccessMessage"]</span>
+            </div>
         }
 
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <span class="alert-icon">⚠</span>
+                <span>@TempData["ErrorMessage"]</span>
+            </div>
+        }
 
-        <div id="responseMessage"></div>
+        <!-- Availability Check Section -->
+        <div class="booking-section">
+            <div class="section-header">
+                <h2 class="section-title">Check Availability</h2>
+                <p class="section-subtitle">Find the perfect time for your visit</p>
+            </div>
+
+            <form asp-controller="Booking" asp-action="CheckAvailableTables" method="get" class="booking-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reservationStart">
+                            <span class="label-icon">📅</span>
+                            Reservation Date & Time
+                        </label>
+                        <input 
+                            type="datetime-local" 
+                            id="reservationStart" 
+                            name="reservationStart" 
+                            class="form-input"
+                            step="1800" 
+                            required 
+                            placeholder="Select date and time"
+                            title="Please select both date and time" />
+                        <small class="form-help">Select both date and time (30-minute intervals)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numGuests">
+                            <span class="label-icon">👥</span>
+                            Number of Guests
+                        </label>
+                        <input 
+                            type="number" 
+                            id="numGuests" 
+                            name="numGuests" 
+                            class="form-input"
+                            placeholder="How many guests?" 
+                            min="1" 
+                            max="20"
+                            required />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <span>Check Available Tables</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Available Tables Section -->
+        @if (Model != null && Model.Any())
+        {
+            <div class="booking-section tables-section">
+                <div class="section-header">
+                    <h2 class="section-title">Available Tables</h2>
+                    <p class="section-subtitle">Choose your preferred table</p>
+                </div>
+
+                <form asp-controller="Booking" asp-action="CreateBooking" method="post" class="booking-form">
+                    <div class="tables-grid">
+                        @foreach (var table in Model)
+                        {
+                            <label class="table-card">
+                                <input type="radio" name="CafeTableId" value="@table.Id" required />
+                                <div class="table-card-content">
+                                    <div class="table-icon">🪑</div>
+                                    <h3 class="table-name">Table @table.Id</h3>
+                                    <p class="table-capacity">
+                                        <span class="capacity-icon">👥</span>
+                                        Up to @table.Capacity guests
+                                    </p>
+                                    <div class="table-checkmark">✓</div>
+                                </div>
+                            </label>
+                        }
+                    </div>
+
+                    <input type="hidden" name="ReservationStart" value="@ViewBag.ReservationStart" />
+                    <input type="hidden" name="NumGuests" value="@ViewBag.NumGuests" />
+
+                    <button type="submit" class="btn-primary btn-confirm">
+                        <span>Confirm Booking</span>
+                        <span class="btn-arrow">✓</span>
+                    </button>
+                </form>
+            </div>
+        }
+        else if (ViewBag.ReservationStart != null)
+        {
+            <div class="no-tables">
+                <span class="no-tables-icon">😔</span>
+                <h3>No Available Tables</h3>
+                <p>Sorry, no tables are available for the selected date, time, and number of guests.</p>
+                <p class="no-tables-suggestion">Please try a different time or contact us directly.</p>
+            </div>
+        }
     </div>
 </div>
