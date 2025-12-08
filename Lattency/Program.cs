@@ -34,6 +34,17 @@ namespace Lattency
                 options.Cookie.IsEssential = true;
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMyDomain", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
 
             //JWT Authentication for API and Cookies for Razor pages
             builder.Services.AddAuthentication(options =>
@@ -137,6 +148,9 @@ namespace Lattency
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            //Enable CORS
+            app.UseCors("AllowMyDomain");
 
             //To configure Cookie session
             app.UseSession();
